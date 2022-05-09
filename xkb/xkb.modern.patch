@@ -142,92 +142,6 @@ diff -rupN xkb.ori/rules/evdev.xml xkb/rules/evdev.xml
          <name>terminate</name>
          <description>Key sequence to kill the X server</description>
        </configItem>
-diff -rupN xkb.ori/rules/xfree86 xkb/rules/xfree86
---- xkb.ori/rules/xfree86	2020-02-29 12:32:57.000000000 +0100
-+++ xkb/rules/xfree86	2022-05-08 09:42:04.021677392 +0200
-@@ -1241,6 +1241,7 @@
-   shift:lshift_both_shiftlock        =       +shift(lshift_both_shiftlock)
-   shift:rshift_both_shiftlock        =       +shift(rshift_both_shiftlock)
-   solaris:sun_compat				 =		 +sun_vndr/solaris(sun_compat)
-+  chromeb:cbnavkeys                  =       +inet(cbnavkeys)
-   lv3:caps_switch                    =       +level3(caps_switch)
-   lv3:bksl_switch                    =       +level3(bksl_switch)
-   lv3:lsgt_switch                    =       +level3(lsgt_switch)
-diff -rupN xkb.ori/rules/xfree86.lst xkb/rules/xfree86.lst
---- xkb.ori/rules/xfree86.lst	2020-02-29 12:32:57.000000000 +0100
-+++ xkb/rules/xfree86.lst	2022-05-08 09:41:48.145851720 +0200
-@@ -970,5 +970,6 @@
-   esperanto:colemak    To the corresponding key in a Colemak layout
-   solaris              Maintain key compatibility with old Solaris keycodes
-   solaris:sun_compat   Sun Key compatibility
-+  chromeb:cbnavkeys    Chromebook Alt Gr Nav Keys
-   terminate            Key sequence to kill the X server
-   terminate:ctrl_alt_bksp Ctrl+Alt+Backspace
-diff -rupN xkb.ori/rules/xfree86.xml xkb/rules/xfree86.xml
---- xkb.ori/rules/xfree86.xml	2020-02-29 12:32:57.000000000 +0100
-+++ xkb/rules/xfree86.xml	2022-05-08 09:41:56.053764741 +0200
-@@ -7598,6 +7598,18 @@
-     </group>
-     <group allowMultipleSelection="true">
-       <configItem>
-+        <name>chromeb</name>
-+        <description>Special Key Overlays for Chromebooks</description>
-+      </configItem>
-+      <option>
-+        <configItem>
-+          <name>chromeb:cbnavkeys</name>
-+          <description>Chromebook Alt Gr Nav Keys</description>
-+        </configItem>
-+      </option>
-+    </group>
-+    <group allowMultipleSelection="true">
-+      <configItem>
-         <name>terminate</name>
-         <description>Key sequence to kill the X server</description>
-       </configItem>
-diff -rupN xkb.ori/rules/xorg xkb/rules/xorg
---- xkb.ori/rules/xorg	2020-02-29 12:32:57.000000000 +0100
-+++ xkb/rules/xorg	2022-05-08 09:42:04.021677392 +0200
-@@ -1241,6 +1241,7 @@
-   shift:lshift_both_shiftlock        =       +shift(lshift_both_shiftlock)
-   shift:rshift_both_shiftlock        =       +shift(rshift_both_shiftlock)
-   solaris:sun_compat				 =		 +sun_vndr/solaris(sun_compat)
-+  chromeb:cbnavkeys                  =       +inet(cbnavkeys)
-   lv3:caps_switch                    =       +level3(caps_switch)
-   lv3:bksl_switch                    =       +level3(bksl_switch)
-   lv3:lsgt_switch                    =       +level3(lsgt_switch)
-diff -rupN xkb.ori/rules/xorg.lst xkb/rules/xorg.lst
---- xkb.ori/rules/xorg.lst	2020-02-29 12:32:57.000000000 +0100
-+++ xkb/rules/xorg.lst	2022-05-08 09:41:48.145851720 +0200
-@@ -970,5 +970,6 @@
-   esperanto:colemak    To the corresponding key in a Colemak layout
-   solaris              Maintain key compatibility with old Solaris keycodes
-   solaris:sun_compat   Sun Key compatibility
-+  chromeb:cbnavkeys    Chromebook Alt Gr Nav Keys
-   terminate            Key sequence to kill the X server
-   terminate:ctrl_alt_bksp Ctrl+Alt+Backspace
-diff -rupN xkb.ori/rules/xorg.xml xkb/rules/xorg.xml
---- xkb.ori/rules/xorg.xml	2020-02-29 12:32:57.000000000 +0100
-+++ xkb/rules/xorg.xml	2022-05-08 09:41:56.053764741 +0200
-@@ -7598,6 +7598,18 @@
-     </group>
-     <group allowMultipleSelection="true">
-       <configItem>
-+        <name>chromeb</name>
-+        <description>Special Key Overlays for Chromebooks</description>
-+      </configItem>
-+      <option>
-+        <configItem>
-+          <name>chromeb:cbnavkeys</name>
-+          <description>Chromebook Alt Gr Nav Keys</description>
-+        </configItem>
-+      </option>
-+    </group>
-+    <group allowMultipleSelection="true">
-+      <configItem>
-         <name>terminate</name>
-         <description>Key sequence to kill the X server</description>
-       </configItem>
 diff -rupN xkb.ori/symbols/de xkb/symbols/de
 --- xkb.ori/symbols/de	2020-02-29 12:32:57.000000000 +0100
 +++ xkb/symbols/de	2022-05-08 09:28:55.529042612 +0200
@@ -286,7 +200,7 @@ diff -rupN xkb.ori/symbols/de xkb/symbols/de
 diff -rupN xkb.ori/symbols/inet xkb/symbols/inet
 --- xkb.ori/symbols/inet	2020-02-29 12:32:57.000000000 +0100
 +++ xkb/symbols/inet	2022-05-08 09:41:38.625956838 +0200
-@@ -1897,3 +1897,18 @@ xkb_symbols "teck229" {
+@@ -1897,3 +1897,21 @@ xkb_symbols "teck229" {
      include "inet(teck227)"
  };
  
@@ -299,9 +213,13 @@ diff -rupN xkb.ori/symbols/inet xkb/symbols/inet
 +    key <BKSP> { [BackSpace, BackSpace, Delete, Insert ] };
 +    key <I150> { [Delete, Delete, Insert, Insert ] };
 +    key <LWIN> { [ Super_L, Super_L, Caps_Lock, Super_L ] };
-+    key <UP>   { [ Up, Up, Prior, Prior ] };
-+    key <DOWN> { [ Down, Down, Next, Next ] };
-+    key <LEFT> { [ Left, Left, Home, Home ] };
-+    key <RGHT> { [ Right, Right, End, End ] };
++    // we don't need the CTRL+ALT Level5 functions, but this type 
++    // has a preserve-function for the shift key which is needed 
++    // to mark text in editors and input fields
++    key.type[Group1] = "CTRL+ALT";
++    key <UP>   { [ Up, Up, Prior, Prior, Up ] };
++    key <DOWN> { [ Down, Down, Next, Next, Down ] };
++    key <LEFT> { [ Left, Left, Home, Home, Left ] };
++    key <RGHT> { [ Right, Right, End, End, Right ] };
 +};
 +
