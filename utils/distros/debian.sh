@@ -8,7 +8,7 @@ function postinstall {
     sudo cp --remove-destination /etc/resolv.conf ${MNT}/etc/resolv.conf
 
     # We're installing the below packages for a cli environment and all desktops
-		# xkb-data is needed because currently it gets manually patched for the function keys to work
+    # xkb-data is needed because currently it gets manually patched for the function keys to work
     BASECMD="apt install -y network-manager tasksel software-properties-common adduser sudo firmware-linux-free firmware-linux-nonfree firmware-iwlwifi iw xkb-data"
 
     # We need to load the iwlmvm module at startup for WiFi
@@ -21,7 +21,7 @@ function postinstall {
 EOT
 
     # we have to add the non-free repository for non-free firmware
-    sed -i -e 's/ main/ main contrib non-free/g' ${MNT}/etc/apt/sources.list
+    sudo sed -i -e 's/ main/ main contrib non-free/g' ${MNT}/etc/apt/sources.list
 
     # Download the desktop that the user has selected
     case $DESKTOP in

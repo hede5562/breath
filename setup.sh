@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # Import
 source utils/functions.sh # Functions
 source utils/bootstrap.sh # Bootstrap Function
@@ -49,6 +47,13 @@ done
 toilet -f mono12 -F crop   "Breath"
 toilet -f term   -F border "Made by MilkyDeveloper"
 echo " $FEATURES"
+
+if [[ $FEATURES == *"KEYMAP"* ]]; then
+  # Ask to make the Search key a Caps Lock key
+  printq "Would you like to make the Search Key a Caps Lock key?"
+  read -r BREATH_CAPSLOCK
+  export BREATH_CAPSLOCK
+fi
 
 # Ask for username
 printq "What would you like the username to be?"
@@ -152,6 +157,9 @@ EOF
 
 sudo cp hostname ${MNT}/etc/
 
+# Set the hostname in hosts
+sudo sed -i "1a\\127.0.1.1 ${BREATH_HOST}" ${MNT}/etc/hosts
+
 # Install all utility files in the bin directory
 cd $ORIGINAL_DIR
 sudo chmod 755 bin/*
@@ -164,10 +172,12 @@ if [[ $FEATURES == *"KEYMAP"* ]]; then
   sudo cp -n ${MNT}/usr/share/X11/xkb/symbols/pc ${MNT}/usr/share/X11/xkb/symbols/pc.org
   sudo cp xkb/xkb.chromebook ${MNT}/usr/share/X11/xkb/symbols/pc
 
-  # Make the Search key a Caps_Lock key
+  # Make the Search key a Caps_Lock key, if wanted by the user
   # Backup the default event definitions and copy in the new one
-  sudo cp -n ${MNT}/usr/share/X11/xkb/keycodes/evdev ${MNT}/usr/share/X11/xkb/keycodes/evdev.org
-  sudo cp xkb/evdev.chromebook ${MNT}/usr/share/X11/xkb/keycodes/evdev
+  if [[ $BREATH_CAPSLOCK =~ ^[Yy]$ ]]; then
+    sudo cp -n ${MNT}/usr/share/X11/xkb/keycodes/evdev ${MNT}/usr/share/X11/xkb/keycodes/evdev.org
+    sudo cp xkb/evdev.chromebook ${MNT}/usr/share/X11/xkb/keycodes/evdev
+  fi
 fi
 
 if [[ $FEATURES == *"moDErn"* ]]; then
@@ -198,7 +208,7 @@ set +u
 printq "Done!"
 if [[ $FEATURES == *"ISO"* ]]; then
    
-   losetup -d $USB
+   sudo losetup -d $USB
 
    echo "IMG built at ~/linux-build/breath.img"
    echo "You can flash this raw image using Etcher, Rufus, DD, or other ISO flash tools."

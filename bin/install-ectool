@@ -2,6 +2,8 @@
 
 # Rough script to install ectool to control fan speed
 
+echo "This script only works on Ubuntu 22.04/Debian Unstable and ahead!"
+
 set -xe
 
 echo "Downloading dependencies..."
@@ -15,3 +17,6 @@ echo
 read BOARD
 make BOARD=$BOARD CROSS_COMPILE= HOST_CROSS_COMPILE= build/$BOARD/util/ectool || echo "Compiling error or invalid board supplied."
 
+sudo cp build/$BOARD/util/ectool /usr/bin/ectool
+echo "Done! Try this to set your fans to 100 percent:"
+echo "ectool fanduty 100"
